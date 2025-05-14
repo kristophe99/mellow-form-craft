@@ -1,6 +1,6 @@
 
 import React from "react";
-import { WritingStyleForm } from "@/components/WritingStyleForm";
+import { WritingStyleForm } from "@/components/writing-style/WritingStyleForm";
 
 export default function WritingStylePage() {
   return (
