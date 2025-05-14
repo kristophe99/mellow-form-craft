@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -17,6 +17,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 
 const writingStyleSchema = z.object({
@@ -119,195 +120,191 @@ export function WritingStyleForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="space-y-6">
+        <div className="space-y-8">
+          {/* Writing Style */}
           <div>
-            <h2 className="text-2xl font-bold">Writing Style</h2>
-            <div className="space-y-4 mt-4">
-              <FormField
-                control={form.control}
-                name="voice"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Voice</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select voice" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="passive">Passive</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: "The manager approved the proposal" vs "The proposal was approved by the manager"
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+            <h2 className="text-2xl font-bold mb-4">Writing Style</h2>
+            <div className="space-y-4 prose max-w-none text-foreground">
+              <p className="flex flex-wrap items-center gap-x-2">
+                Use
+                <FormField
+                  control={form.control}
+                  name="voice"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[110px]">
+                            <SelectValue placeholder="Select voice" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="active">active</SelectItem>
+                          <SelectItem value="passive">passive</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                voice e.g. "The manager approved the proposal" vs "The proposal was approved by the manager"
+              </p>
 
-              <FormField
-                control={form.control}
-                name="writeConfidently"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="writeConfidently"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 m-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
                         Write confidently
-                      </FormLabel>
-                      <FormDescription>
-                        Write "We should meet next week" rather than "I think we should meet next week"
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                — e.g., write "We should meet next week" rather than "I think we should meet next week"
+              </p>
 
-              <FormField
-                control={form.control}
-                name="avoidWordyPhrases"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>
-                        Avoid wordy phrases
-                      </FormLabel>
-                      <FormDescription>
-                        Say "Clearly, the report shows" instead of "It's clearly evident that the report shows"
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="useCorrectPunctuation"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>
-                        Use correct punctuation
-                      </FormLabel>
-                      <FormDescription>
-                        Avoid misplaced or missing commas, hyphens, semicolons, periods, etc.
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="useContractions"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>
-                        Use contractions where possible
-                      </FormLabel>
-                      <FormDescription>
-                        Example: "Don't" instead of "Do Not"
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="useTitleCase"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>
-                        Use title case in headings and titles
-                      </FormLabel>
-                      <FormDescription>
-                        Example: "How to Write Effective Marketing Headlines" vs "How to write effective marketing headlines"
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-bold">Regional Customization</h2>
-            <div className="space-y-4 mt-4">
-              <FormField
-                control={form.control}
-                name="region"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Customize text to region</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="avoidWordyPhrases"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 m-0">
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select region" />
-                        </SelectTrigger>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="German (DE)">German (DE)</SelectItem>
-                        <SelectItem value="German (AT)">German (AT)</SelectItem>
-                        <SelectItem value="German (CH)">German (CH)</SelectItem>
-                        <SelectItem value="English (US)">English (US)</SelectItem>
-                        <SelectItem value="English (UK)">English (UK)</SelectItem>
-                        <SelectItem value="English (CA)">English (CA)</SelectItem>
-                        <SelectItem value="English (AU)">English (AU)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+                      <div className="space-y-1 leading-none">
+                        Avoid wordy phrases
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                — e.g., say "Clearly, the report shows" instead of "It's clearly evident that the report shows"
+              </p>
+
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useCorrectPunctuation"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 m-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        Use correct punctuation
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                - misplaced or missing commas, hyphens, semicolons, periods, and more.
+              </p>
+
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useContractions"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 m-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        Use contractions where possible
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                e.g. "Don't" instead of "Do Not"
+              </p>
+
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useTitleCase"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 m-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        Use title case in headings and titles
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                e.g. "How to Write Effective Marketing Headlines" vs "How to write effective marketing headlines"
+              </p>
             </div>
           </div>
 
+          {/* Regional Customization */}
           <div>
-            <h2 className="text-2xl font-bold">Acronyms</h2>
-            <div className="space-y-4 mt-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h2 className="text-2xl font-bold mb-4">Regional Customization</h2>
+            <div className="prose max-w-none text-foreground">
+              <p className="flex flex-wrap items-center gap-x-2">
+                Customize text to
+                <FormField
+                  control={form.control}
+                  name="region"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[140px]">
+                            <SelectValue placeholder="Select region" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="German (DE)">German (DE)</SelectItem>
+                          <SelectItem value="German (AT)">German (AT)</SelectItem>
+                          <SelectItem value="German (CH)">German (CH)</SelectItem>
+                          <SelectItem value="English (US)">English (US)</SelectItem>
+                          <SelectItem value="English (UK)">English (UK)</SelectItem>
+                          <SelectItem value="English (CA)">English (CA)</SelectItem>
+                          <SelectItem value="English (AU)">English (AU)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                region
+              </p>
+            </div>
+          </div>
+
+          {/* Acronyms */}
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Acronyms</h2>
+            <div className="space-y-4 prose max-w-none text-foreground">
+              <p className="flex flex-wrap items-center gap-x-2">
+                When using an acronym, introduce it with the 
                 <FormField
                   control={form.control}
                   name="acronymIntroduction"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Acronym introduction</FormLabel>
+                    <FormItem className="inline-flex m-0">
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-[200px]">
                             <SelectValue placeholder="Select option" />
                           </SelectTrigger>
                         </FormControl>
@@ -319,16 +316,15 @@ export function WritingStyleForm() {
                     </FormItem>
                   )}
                 />
-
+                on
                 <FormField
                   control={form.control}
                   name="acronymMentionFrequency"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Mention frequency</FormLabel>
+                    <FormItem className="inline-flex m-0">
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-[80px]">
                             <SelectValue placeholder="Select option" />
                           </SelectTrigger>
                         </FormControl>
@@ -337,272 +333,272 @@ export function WritingStyleForm() {
                           <SelectItem value="each">each</SelectItem>
                         </SelectContent>
                       </Select>
-                      <FormDescription>
-                        Example: BMW (Bayerische Motoren Werke (BMW))
-                      </FormDescription>
                     </FormItem>
                   )}
                 />
-              </div>
+                mention. Example: BMW (Bayerische Motoren Werke (BMW).
+              </p>
 
-              <FormField
-                control={form.control}
-                name="introduceCommonAcronyms"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Introduce common acronyms</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Do">Do</SelectItem>
-                        <SelectItem value="Don't">Don't</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: CEO
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="introduceCommonAcronyms"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[80px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Do">Do</SelectItem>
+                          <SelectItem value="Don't">Don't</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                introduce common acronyms e.g. CEO
+              </p>
 
-              <FormField
-                control={form.control}
-                name="emojiUsage"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Emoji usage</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Never Use">Never Use</SelectItem>
-                        <SelectItem value="Limited Use">Limited Use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="emojiUsage"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[120px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Never Use">Never Use</SelectItem>
+                          <SelectItem value="Limited Use">Limited Use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                of emojis e.g. 🤮
+              </p>
             </div>
           </div>
 
+          {/* Gender-Inclusivity */}
           <div>
-            <h2 className="text-2xl font-bold">Gender-Inclusivity</h2>
-            <div className="space-y-4 mt-4">
-              <FormField
-                control={form.control}
-                name="useGenderInclusiveNouns"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gender-inclusive nouns</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Don't Use">Don't Use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: "police officer" not "policeman"
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+            <h2 className="text-2xl font-bold mb-4">Gender-Inclusivity</h2>
+            <div className="space-y-4 prose max-w-none text-foreground">
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useGenderInclusiveNouns"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[100px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Don't Use">Don't Use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                gender-inclusive nouns if possible e.g., "police officer" and not "policeman"
+              </p>
 
-              <FormField
-                control={form.control}
-                name="useGenderInclusivePronouns"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gender-inclusive pronouns</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Don't Use">Don't Use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: "Each employee should submit their report" vs "his report"
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useGenderInclusivePronouns"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[100px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Don't Use">Don't Use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                gender-inclusive pronouns if possible e.g., Each employee should submit their report by Friday vs Each employee should submit his report by Friday
+              </p>
             </div>
           </div>
 
+          {/* Ampersand */}
           <div>
-            <h2 className="text-2xl font-bold">Ampersand</h2>
-            <div className="space-y-4 mt-4">
-              <FormField
-                control={form.control}
-                name="useAmpersand"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>
+            <h2 className="text-2xl font-bold mb-4">Ampersand</h2>
+            <div className="space-y-4 prose max-w-none text-foreground">
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useAmpersand"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 m-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
                         Use an ampersand (&) unless it's used in a brand name
-                      </FormLabel>
-                    </div>
-                  </FormItem>
-                )}
-              />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </p>
 
-              <FormField
-                control={form.control}
-                name="usePlusForAnd"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="usePlusForAnd"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 m-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
                         Don't use '+' to mean 'and'
-                      </FormLabel>
-                    </div>
-                  </FormItem>
-                )}
-              />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </p>
             </div>
           </div>
 
+          {/* Capitalization */}
           <div>
-            <h2 className="text-2xl font-bold">Capitalization</h2>
-            <div className="space-y-4 mt-4">
-              <FormField
-                control={form.control}
-                name="capitalizeProperNames"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>
+            <h2 className="text-2xl font-bold mb-4">Capitalization</h2>
+            <div className="space-y-4 prose max-w-none text-foreground">
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="capitalizeProperNames"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 m-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
                         Capitalize proper names, geographic terms, historic episodes, and words derived from proper nouns
-                      </FormLabel>
-                      <FormDescription>
-                        Example: USA, Julius Caesar
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                E.g. USA, Julius Caesar
+              </p>
 
-              <FormField
-                control={form.control}
-                name="emailUrlCapitalization"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email and URL capitalization</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Don't Use">Don't Use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: Info@nuwacom.ai vs info@nuwacom.ai
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="emailUrlCapitalization"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[110px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Don't Use">Don't Use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                all lowercase when writing out an email address or website URL e.g. Info@nuwacom.ai vs info@nuwacom.ai
+              </p>
             </div>
           </div>
 
+          {/* Dates and Numbers */}
           <div>
-            <h2 className="text-2xl font-bold">Dates and Numbers</h2>
-            <div className="space-y-4 mt-4">
-              <FormField
-                control={form.control}
-                name="spellOutNumbers"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Spell out numbers</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="0 – 9">0 – 9</SelectItem>
-                        <SelectItem value="0 – 10">0 – 10</SelectItem>
-                        <SelectItem value="0 – 99">0 – 99</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+            <h2 className="text-2xl font-bold mb-4">Dates and Numbers</h2>
+            <div className="space-y-4 prose max-w-none text-foreground">
+              <p className="flex flex-wrap items-center gap-x-2">
+                Always spell out numbers
+                <FormField
+                  control={form.control}
+                  name="spellOutNumbers"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[90px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="0 – 9">0 – 9</SelectItem>
+                          <SelectItem value="0 – 10">0 – 10</SelectItem>
+                          <SelectItem value="0 – 99">0 – 99</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </p>
 
-              <FormField
-                control={form.control}
-                name="numberSeparator"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Number separator</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="commas">commas</SelectItem>
-                        <SelectItem value="period">period</SelectItem>
-                        <SelectItem value="space">space</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: 1,000 vs 1.000 vs 1 000
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                Use
+                <FormField
+                  control={form.control}
+                  name="numberSeparator"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[110px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="commas">commas</SelectItem>
+                          <SelectItem value="period">period</SelectItem>
+                          <SelectItem value="space">space</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                to separate numbers with four or more digits e.g. 1,000 vs 1.000 vs 1 000
+              </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <p className="flex flex-wrap items-center gap-x-2">
+                For currencies, use the
                 <FormField
                   control={form.control}
                   name="currencyFormat"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Currency format</FormLabel>
+                    <FormItem className="inline-flex m-0">
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-[170px]">
                             <SelectValue placeholder="Select option" />
                           </SelectTrigger>
                         </FormControl>
@@ -614,16 +610,15 @@ export function WritingStyleForm() {
                     </FormItem>
                   )}
                 />
-
+                format
                 <FormField
                   control={form.control}
                   name="currencySpace"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Currency spacing</FormLabel>
+                    <FormItem className="inline-flex m-0">
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-[100px]">
                             <SelectValue placeholder="Select option" />
                           </SelectTrigger>
                         </FormControl>
@@ -632,251 +627,253 @@ export function WritingStyleForm() {
                           <SelectItem value="with">with</SelectItem>
                         </SelectContent>
                       </Select>
-                      <FormDescription>
-                        Example: we spent 10.000 €
-                      </FormDescription>
                     </FormItem>
                   )}
                 />
-              </div>
+                spaces in between. E.g. we spent 10.000 €
+              </p>
 
-              <FormField
-                control={form.control}
-                name="currencyAbbreviationPeriods"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Currency abbreviation periods</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Don't Use">Don't Use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: USD, not U.S.D.
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="currencyAbbreviationPeriods"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[110px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Don't Use">Don't Use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                periods in currency abbreviations. Example: USD, not U.S.D.
+              </p>
 
-              <FormField
-                control={form.control}
-                name="shortDateFormat"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Short date format</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
-                        <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: 1/12/2025
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                For short dates, use
+                <FormField
+                  control={form.control}
+                  name="shortDateFormat"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[130px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
+                          <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                (without leading zeros). E.g. It was on 1/12/2025
+              </p>
 
-              <FormField
-                control={form.control}
-                name="longDateFormat"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Long date format</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="DD Month YYYY">DD Month YYYY</SelectItem>
-                        <SelectItem value="Month DD, YYYY">Month DD, YYYY</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: 31 December 1905
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                For long dates, use
+                <FormField
+                  control={form.control}
+                  name="longDateFormat"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[160px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="DD Month YYYY">DD Month YYYY</SelectItem>
+                          <SelectItem value="Month DD, YYYY">Month DD, YYYY</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                (without leading zeros). E.g. It was on 31 December 1905.
+              </p>
             </div>
           </div>
 
+          {/* Punctuation */}
           <div>
-            <h2 className="text-2xl font-bold">Punctuation</h2>
-            <div className="space-y-4 mt-4">
-              <FormField
-                control={form.control}
-                name="useSemicolons"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semicolons</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Don't Use">Don't Use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+            <h2 className="text-2xl font-bold mb-4">Punctuation</h2>
+            <div className="space-y-4 prose max-w-none text-foreground">
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useSemicolons"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[110px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Don't Use">Don't Use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                Semicolons
+              </p>
 
-              <FormField
-                control={form.control}
-                name="replaceExclamationPoints"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="replaceExclamationPoints"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2 m-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
                         Replace exclamation points with periods
-                      </FormLabel>
-                    </div>
-                  </FormItem>
-                )}
-              />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </p>
 
-              <FormField
-                control={form.control}
-                name="useEmDashForAside"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Em-dash for aside</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Don't use">Don't use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: She finally replied to the email—three days later—with a simple "OK."
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useEmDashForAside"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[110px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Don't use">Don't use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                an em-dash (-) to offsite an aside e.g. She finally replied to the email—three days later—with a simple "OK."
+              </p>
 
-              <FormField
-                control={form.control}
-                name="emDashSpaces"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Em-dash spaces</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Don't use">Don't use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: She finally replied to the email — three days later — with a simple "OK."
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="emDashSpaces"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[110px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Don't use">Don't use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                spaces before and after the em-dash e.g. She finally replied to the email — three days later — with a simple "OK."
+              </p>
 
-              <FormField
-                control={form.control}
-                name="useEmDashForRange"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Em-dash for range</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Don't use">Don't use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Example: Pages 45–52 of the report cover key findings.
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useEmDashForRange"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[110px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Don't use">Don't use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                an em-dash to connect a range of numbers or dates e.g. Pages 45–52 of the report cover key findings.
+              </p>
 
-              <FormField
-                control={form.control}
-                name="useOxfordComma"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Oxford (serial) comma</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Use">Use</SelectItem>
-                        <SelectItem value="Don't use">Don't use</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                <FormField
+                  control={form.control}
+                  name="useOxfordComma"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[110px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Use">Use</SelectItem>
+                          <SelectItem value="Don't use">Don't use</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                Oxford (serial) commas before the last items in a series
+              </p>
 
-              <FormField
-                control={form.control}
-                name="spacesAfterPeriod"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Spaces after period</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select option" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="1">1</SelectItem>
-                        <SelectItem value="2">2</SelectItem>
-                        <SelectItem value="3">3</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+              <p className="flex flex-wrap items-center gap-x-2">
+                Use
+                <FormField
+                  control={form.control}
+                  name="spacesAfterPeriod"
+                  render={({ field }) => (
+                    <FormItem className="inline-flex m-0">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="w-[60px]">
+                            <SelectValue placeholder="Select option" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="1">1</SelectItem>
+                          <SelectItem value="2">2</SelectItem>
+                          <SelectItem value="3">3</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                spaces after a period
+              </p>
             </div>
           </div>
         </div>
 
-        <Button type="submit" className="w-full md:w-auto">Save Writing Style Preferences</Button>
+        <Button type="submit" className="mt-8">Save Writing Style Preferences</Button>
       </form>
     </Form>
   );
