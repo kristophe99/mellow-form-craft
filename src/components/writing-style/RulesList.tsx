@@ -7,11 +7,15 @@ interface RulesListProps {
 
 export function RulesList({ rules }: RulesListProps) {
   return (
-    <div className="mt-10 border border-border rounded-md p-6">
-      <h2 className="text-2xl font-bold mb-4">Generated Writing Style Rules</h2>
-      <pre className="whitespace-pre-line bg-muted p-4 rounded-md text-sm">
-        {rules.join('\n')}
-      </pre>
+    <div className="border border-border rounded-md p-6">
+      <ul className="space-y-3">
+        {rules.map((rule, index) => (
+          <li key={index} className="flex">
+            <span className="text-primary font-medium mr-2">{index + 1}.</span>
+            <span>{rule}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

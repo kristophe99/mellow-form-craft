@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -16,13 +17,11 @@ import { AmpersandSection } from "./sections/AmpersandSection";
 import { CapitalizationSection } from "./sections/CapitalizationSection";
 import { DatesAndNumbersSection } from "./sections/DatesAndNumbersSection";
 import { PunctuationSection } from "./sections/PunctuationSection";
-import { RulesList } from "./RulesList";
 
 type WritingStyleFormValues = z.infer<typeof writingStyleSchema>;
 
 export function WritingStyleForm() {
-  const [rules, setRules] = useState<string[]>([]);
-  const [showRules, setShowRules] = useState(false);
+  const navigate = useNavigate();
 
   const form = useForm<WritingStyleFormValues>({
     resolver: zodResolver(writingStyleSchema),
@@ -99,12 +98,15 @@ export function WritingStyleForm() {
   function onSubmit(data: WritingStyleFormValues) {
     console.log(data);
     const generatedRules = generateRules(data);
-    setRules(generatedRules);
-    setShowRules(true);
     
     toast({
       title: "Writing style preferences saved",
       description: "Your settings have been successfully saved.",
+    });
+
+    // Navigate to the results page with the generated rules
+    navigate('/writing-style/results', { 
+      state: { rules: generatedRules }
     });
   }
 
@@ -123,8 +125,6 @@ export function WritingStyleForm() {
         </div>
 
         <Button type="submit" className="mt-8">Save Writing Style Preferences</Button>
-        
-        {showRules && <RulesList rules={rules} />}
       </form>
     </Form>
   );
