@@ -9,6 +9,7 @@ export default function WritingStylePage() {
         <h1 className="text-3xl font-bold mb-8">Writing Style Preferences</h1>
         <p className="text-muted-foreground mb-8">
           Configure how your content should be written by setting your preferred writing style options below.
+          After saving, you will see a list of generated rules based on your selections.
         </p>
         <WritingStyleForm />
       </div>

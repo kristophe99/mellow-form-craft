@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -16,10 +16,14 @@ import { AmpersandSection } from "./sections/AmpersandSection";
 import { CapitalizationSection } from "./sections/CapitalizationSection";
 import { DatesAndNumbersSection } from "./sections/DatesAndNumbersSection";
 import { PunctuationSection } from "./sections/PunctuationSection";
+import { RulesList } from "./RulesList";
 
 type WritingStyleFormValues = z.infer<typeof writingStyleSchema>;
 
 export function WritingStyleForm() {
+  const [rules, setRules] = useState<string[]>([]);
+  const [showRules, setShowRules] = useState(false);
+
   const form = useForm<WritingStyleFormValues>({
     resolver: zodResolver(writingStyleSchema),
     defaultValues: {
@@ -57,8 +61,47 @@ export function WritingStyleForm() {
     },
   });
 
+  function generateRules(data: WritingStyleFormValues) {
+    const rulesList: string[] = [
+      `Use ${data.voice} voice e.g. "The manager approved the proposal" vs "The proposal was approved by the manager"`,
+      `${data.writeConfidently ? "Write confidently" : "Don't write confidently"} — e.g., write "We should meet next week" rather than "I think we should meet next week"`,
+      `${data.avoidWordyPhrases ? "Avoid wordy phrases" : "Don't avoid wordy phrases"} — e.g., say "Clearly, the report shows" instead of "It's clearly evident that the report shows"`,
+      `${data.useCorrectPunctuation ? "Use correct punctuation" : "Don't enforce correct punctuation"} - misplaced or missing commas, hyphens, semicolons, periods, and more.`,
+      `${data.useContractions ? "Use contractions where possible" : "Don't use contractions"} e.g. "Don't" instead of "Do Not"`,
+      `${data.useTitleCase ? "Use title case in headings and titles" : "Don't use title case in headings and titles"} e.g. "How to Write Effective Marketing Headlines" vs "How to write effective marketing headlines"`,
+      `Customize text to ${data.region} region`,
+      `When using an acronym, introduce it with the ${data.acronymIntroduction} on ${data.acronymMentionFrequency} mention. Example: BMW (Bayerische Motoren Werke (BMW).`,
+      `${data.introduceCommonAcronyms} introduce common acronyms e.g. CEO`,
+      `${data.emojiUsage} of emojis e.g. 🤮`,
+      `${data.useGenderInclusiveNouns} gender-inclusive nouns if possible e.g., "police officer" and not "policeman"`,
+      `${data.useGenderInclusivePronouns} gender-inclusive pronouns if possible e.g., Each employee should submit their report by Friday vs Each employee should submit his report by Friday`,
+      `${data.useAmpersand ? "Use" : "Don't use"} an ampersand (&) unless it's used in a brand name`,
+      `${data.usePlusForAnd ? "Use" : "Don't use"} '+' to mean 'and'`,
+      `${data.capitalizeProperNames ? "Capitalize" : "Don't capitalize"} proper names, geographic terms, historic episodes, and words derived from proper nouns E.g. USA, Julius Caesar`,
+      `${data.emailUrlCapitalization} all lowercase when writing out an email address or website URL e.g. Info@nuwacom.ai vs info@nuwacom.ai`,
+      `Spell out numbers ${data.spellOutNumbers}`,
+      `Use ${data.numberSeparator} for number separators`,
+      `Use ${data.currencyFormat} for currency format ${data.currencySpace} space, ${data.currencyAbbreviationPeriods} periods in abbreviations`,
+      `Use ${data.shortDateFormat} for short date format`,
+      `Use ${data.longDateFormat} for long date format`,
+      `${data.useSemicolons} semicolons`,
+      `${data.replaceExclamationPoints ? "Replace" : "Don't replace"} exclamation points`,
+      `${data.useEmDashForAside} em dash for aside`,
+      `${data.emDashSpaces} spaces with em dash`,
+      `${data.useEmDashForRange} em dash for range`,
+      `${data.useOxfordComma} Oxford comma`,
+      `Use ${data.spacesAfterPeriod} space(s) after period`
+    ];
+
+    return rulesList;
+  }
+
   function onSubmit(data: WritingStyleFormValues) {
     console.log(data);
+    const generatedRules = generateRules(data);
+    setRules(generatedRules);
+    setShowRules(true);
+    
     toast({
       title: "Writing style preferences saved",
       description: "Your settings have been successfully saved.",
@@ -80,6 +123,8 @@ export function WritingStyleForm() {
         </div>
 
         <Button type="submit" className="mt-8">Save Writing Style Preferences</Button>
+        
+        {showRules && <RulesList rules={rules} />}
       </form>
     </Form>
   );
