@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -61,36 +61,102 @@ export function WritingStyleForm() {
   });
 
   function generateRules(data: WritingStyleFormValues) {
-    const rulesList: string[] = [
-      `Use ${data.voice} voice e.g. "The manager approved the proposal" vs "The proposal was approved by the manager"`,
-      `${data.writeConfidently ? "Write confidently" : "Don't write confidently"} — e.g., write "We should meet next week" rather than "I think we should meet next week"`,
-      `${data.avoidWordyPhrases ? "Avoid wordy phrases" : "Don't avoid wordy phrases"} — e.g., say "Clearly, the report shows" instead of "It's clearly evident that the report shows"`,
-      `${data.useCorrectPunctuation ? "Use correct punctuation" : "Don't enforce correct punctuation"} - misplaced or missing commas, hyphens, semicolons, periods, and more.`,
-      `${data.useContractions ? "Use contractions where possible" : "Don't use contractions"} e.g. "Don't" instead of "Do Not"`,
-      `${data.useTitleCase ? "Use title case in headings and titles" : "Don't use title case in headings and titles"} e.g. "How to Write Effective Marketing Headlines" vs "How to write effective marketing headlines"`,
-      `Customize text to ${data.region} region`,
-      `When using an acronym, introduce it with the ${data.acronymIntroduction} on ${data.acronymMentionFrequency} mention. Example: BMW (Bayerische Motoren Werke (BMW).`,
-      `${data.introduceCommonAcronyms} introduce common acronyms e.g. CEO`,
-      `${data.emojiUsage} of emojis e.g. 🤮`,
-      `${data.useGenderInclusiveNouns} gender-inclusive nouns if possible e.g., "police officer" and not "policeman"`,
-      `${data.useGenderInclusivePronouns} gender-inclusive pronouns if possible e.g., Each employee should submit their report by Friday vs Each employee should submit his report by Friday`,
-      `${data.useAmpersand ? "Use" : "Don't use"} an ampersand (&) unless it's used in a brand name`,
-      `${data.usePlusForAnd ? "Use" : "Don't use"} '+' to mean 'and'`,
-      `${data.capitalizeProperNames ? "Capitalize" : "Don't capitalize"} proper names, geographic terms, historic episodes, and words derived from proper nouns E.g. USA, Julius Caesar`,
-      `${data.emailUrlCapitalization} all lowercase when writing out an email address or website URL e.g. Info@nuwacom.ai vs info@nuwacom.ai`,
-      `Spell out numbers ${data.spellOutNumbers}`,
-      `Use ${data.numberSeparator} for number separators`,
-      `Use ${data.currencyFormat} for currency format ${data.currencySpace} space, ${data.currencyAbbreviationPeriods} periods in abbreviations`,
-      `Use ${data.shortDateFormat} for short date format`,
-      `Use ${data.longDateFormat} for long date format`,
-      `${data.useSemicolons} semicolons`,
-      `${data.replaceExclamationPoints ? "Replace" : "Don't replace"} exclamation points`,
-      `${data.useEmDashForAside} em dash for aside`,
-      `${data.emDashSpaces} spaces with em dash`,
-      `${data.useEmDashForRange} em dash for range`,
-      `${data.useOxfordComma} Oxford comma`,
-      `Use ${data.spacesAfterPeriod} space(s) after period`
-    ];
+    const rulesList: string[] = [];
+    
+    // Only add rules for fields that are checked or have values
+    
+    // Voice is always included as it's a select field
+    rulesList.push(`Use ${data.voice} voice e.g. "The manager approved the proposal" vs "The proposal was approved by the manager"`);
+    
+    // Only include checkbox rules if they're checked
+    if (data.writeConfidently) {
+      rulesList.push(`Write confidently — e.g., write "We should meet next week" rather than "I think we should meet next week"`);
+    }
+    
+    if (data.avoidWordyPhrases) {
+      rulesList.push(`Avoid wordy phrases — e.g., say "Clearly, the report shows" instead of "It's clearly evident that the report shows"`);
+    }
+    
+    if (data.useCorrectPunctuation) {
+      rulesList.push(`Use correct punctuation - misplaced or missing commas, hyphens, semicolons, periods, and more.`);
+    }
+    
+    if (data.useContractions) {
+      rulesList.push(`Use contractions where possible e.g. "Don't" instead of "Do Not"`);
+    }
+    
+    if (data.useTitleCase) {
+      rulesList.push(`Use title case in headings and titles e.g. "How to Write Effective Marketing Headlines" vs "How to write effective marketing headlines"`);
+    }
+    
+    // Region is always included as it's a select field
+    rulesList.push(`Customize text to ${data.region} region`);
+    
+    // Acronyms are select fields, so always include them
+    rulesList.push(`When using an acronym, introduce it with the ${data.acronymIntroduction} on ${data.acronymMentionFrequency} mention. Example: BMW (Bayerische Motoren Werke (BMW).`);
+    rulesList.push(`${data.introduceCommonAcronyms} introduce common acronyms e.g. CEO`);
+    rulesList.push(`${data.emojiUsage} of emojis e.g. 🤮`);
+    
+    // Gender inclusivity are select fields, so always include them
+    rulesList.push(`${data.useGenderInclusiveNouns} gender-inclusive nouns if possible e.g., "police officer" and not "policeman"`);
+    rulesList.push(`${data.useGenderInclusivePronouns} gender-inclusive pronouns if possible e.g., Each employee should submit their report by Friday vs Each employee should submit his report by Friday`);
+    
+    // Only include ampersand rules if they're checked
+    if (data.useAmpersand) {
+      rulesList.push(`Use an ampersand (&) unless it's used in a brand name`);
+    } else {
+      rulesList.push(`Don't use an ampersand (&) unless it's used in a brand name`);
+    }
+    
+    if (data.usePlusForAnd) {
+      rulesList.push(`Use '+' to mean 'and'`);
+    } else {
+      rulesList.push(`Don't use '+' to mean 'and'`);
+    }
+    
+    // Only include capitalization if checked
+    if (data.capitalizeProperNames) {
+      rulesList.push(`Capitalize proper names, geographic terms, historic episodes, and words derived from proper nouns E.g. USA, Julius Caesar`);
+    }
+    
+    // Email/URL capitalization is a select field
+    if (data.emailUrlCapitalization !== 'N/A') {
+      rulesList.push(`${data.emailUrlCapitalization} all lowercase when writing out an email address or website URL e.g. Info@nuwacom.ai vs info@nuwacom.ai`);
+    }
+    
+    // Number formatting are select fields, so always include them
+    rulesList.push(`Spell out numbers ${data.spellOutNumbers}`);
+    rulesList.push(`Use ${data.numberSeparator} for number separators`);
+    rulesList.push(`Use ${data.currencyFormat} for currency format ${data.currencySpace} space, ${data.currencyAbbreviationPeriods} periods in abbreviations`);
+    rulesList.push(`Use ${data.shortDateFormat} for short date format`);
+    rulesList.push(`Use ${data.longDateFormat} for long date format`);
+    
+    // Punctuation rules - only include if they have values
+    if (data.useSemicolons !== 'N/A') {
+      rulesList.push(`${data.useSemicolons} semicolons`);
+    }
+    
+    if (data.replaceExclamationPoints) {
+      rulesList.push(`Replace exclamation points`);
+    }
+    
+    if (data.useEmDashForAside !== 'N/A') {
+      rulesList.push(`${data.useEmDashForAside} em dash for aside`);
+    }
+    
+    if (data.emDashSpaces !== 'N/A') {
+      rulesList.push(`${data.emDashSpaces} spaces with em dash`);
+    }
+    
+    if (data.useEmDashForRange !== 'N/A') {
+      rulesList.push(`${data.useEmDashForRange} em dash for range`);
+    }
+    
+    if (data.useOxfordComma !== 'N/A') {
+      rulesList.push(`${data.useOxfordComma} Oxford comma`);
+    }
+    
+    rulesList.push(`Use ${data.spacesAfterPeriod} space(s) after period`);
 
     return rulesList;
   }
