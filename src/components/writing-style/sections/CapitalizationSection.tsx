@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Control } from "react-hook-form";
+import { Control, useFormContext } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -9,14 +9,35 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { WritingStyleSection } from "../WritingStyleSection";
+import { SelectAllSection } from "../SelectAllSection";
 
 interface CapitalizationSectionProps {
   control: Control<any>;
 }
 
 export function CapitalizationSection({ control }: CapitalizationSectionProps) {
+  const { setValue } = useFormContext();
+  
+  const capitalizationFields = [
+    "capitalizeProperNames", 
+    "emailUrlCapitalization"
+  ];
+  
+  const defaultValues = {
+    capitalizeProperNames: true,
+    emailUrlCapitalization: "Don't Use",
+  };
+  
   return (
     <WritingStyleSection title="Capitalization">
+      <SelectAllSection 
+        control={control} 
+        sectionName="capitalization"
+        fields={capitalizationFields}
+        setValue={setValue}
+        defaultValues={defaultValues}
+      />
+      
       <p className="flex flex-wrap items-center gap-x-2">
         <FormField
           control={control}

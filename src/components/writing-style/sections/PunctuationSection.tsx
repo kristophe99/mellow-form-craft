@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Control } from "react-hook-form";
+import { Control, useFormContext } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -9,14 +9,45 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { WritingStyleSection } from "../WritingStyleSection";
+import { SelectAllSection } from "../SelectAllSection";
 
 interface PunctuationSectionProps {
   control: Control<any>;
 }
 
 export function PunctuationSection({ control }: PunctuationSectionProps) {
+  const { setValue } = useFormContext();
+  
+  const punctuationFields = [
+    "useSemicolons", 
+    "replaceExclamationPoints",
+    "useEmDashForAside",
+    "emDashSpaces",
+    "useEmDashForRange",
+    "useOxfordComma",
+    "spacesAfterPeriod"
+  ];
+  
+  const defaultValues = {
+    useSemicolons: "Use",
+    replaceExclamationPoints: false,
+    useEmDashForAside: "Use",
+    emDashSpaces: "Don't use",
+    useEmDashForRange: "Use",
+    useOxfordComma: "Use",
+    spacesAfterPeriod: "1",
+  };
+  
   return (
     <WritingStyleSection title="Punctuation">
+      <SelectAllSection 
+        control={control} 
+        sectionName="punctuation"
+        fields={punctuationFields}
+        setValue={setValue}
+        defaultValues={defaultValues}
+      />
+      
       <p className="flex flex-wrap items-center gap-x-2">
         <FormField
           control={control}
@@ -25,19 +56,20 @@ export function PunctuationSection({ control }: PunctuationSectionProps) {
             <FormItem className="inline-flex m-0">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[110px]">
+                  <SelectTrigger className="w-[140px]">
                     <SelectValue placeholder="Select option" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="Use">Use</SelectItem>
                   <SelectItem value="Don't Use">Don't Use</SelectItem>
+                  <SelectItem value="N/A">Not applicable</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        Semicolons
+        semicolons
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
@@ -53,7 +85,7 @@ export function PunctuationSection({ control }: PunctuationSectionProps) {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                Replace exclamation points with periods
+                Replace exclamation points
               </div>
             </FormItem>
           )}
@@ -74,13 +106,14 @@ export function PunctuationSection({ control }: PunctuationSectionProps) {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="Use">Use</SelectItem>
-                  <SelectItem value="Don't use">Don't use</SelectItem>
+                  <SelectItem value="Don't Use">Don't Use</SelectItem>
+                  <SelectItem value="N/A">Not applicable</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        an em-dash (-) to offsite an aside e.g. She finally replied to the email—three days later—with a simple "OK."
+        em dash for aside
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
@@ -98,12 +131,13 @@ export function PunctuationSection({ control }: PunctuationSectionProps) {
                 <SelectContent>
                   <SelectItem value="Use">Use</SelectItem>
                   <SelectItem value="Don't use">Don't use</SelectItem>
+                  <SelectItem value="N/A">Not applicable</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        spaces before and after the em-dash e.g. She finally replied to the email — three days later — with a simple "OK."
+        spaces with em dash
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
@@ -120,13 +154,14 @@ export function PunctuationSection({ control }: PunctuationSectionProps) {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="Use">Use</SelectItem>
-                  <SelectItem value="Don't use">Don't use</SelectItem>
+                  <SelectItem value="Don't Use">Don't Use</SelectItem>
+                  <SelectItem value="N/A">Not applicable</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        an em-dash to connect a range of numbers or dates e.g. Pages 45–52 of the report cover key findings.
+        em dash for range
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
@@ -143,13 +178,14 @@ export function PunctuationSection({ control }: PunctuationSectionProps) {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="Use">Use</SelectItem>
-                  <SelectItem value="Don't use">Don't use</SelectItem>
+                  <SelectItem value="Don't Use">Don't Use</SelectItem>
+                  <SelectItem value="N/A">Not applicable</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        Oxford (serial) commas before the last items in a series
+        Oxford comma
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
@@ -161,20 +197,19 @@ export function PunctuationSection({ control }: PunctuationSectionProps) {
             <FormItem className="inline-flex m-0">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[60px]">
+                  <SelectTrigger className="w-[80px]">
                     <SelectValue placeholder="Select option" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="1">1</SelectItem>
                   <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        spaces after a period
+        space(s) after period
       </p>
     </WritingStyleSection>
   );

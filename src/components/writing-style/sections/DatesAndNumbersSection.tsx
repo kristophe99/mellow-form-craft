@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Control } from "react-hook-form";
+import { Control, useFormContext } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -8,16 +8,47 @@ import {
 } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { WritingStyleSection } from "../WritingStyleSection";
+import { SelectAllSection } from "../SelectAllSection";
 
 interface DatesAndNumbersSectionProps {
   control: Control<any>;
 }
 
 export function DatesAndNumbersSection({ control }: DatesAndNumbersSectionProps) {
+  const { setValue } = useFormContext();
+  
+  const datesAndNumbersFields = [
+    "spellOutNumbers", 
+    "numberSeparator",
+    "currencyFormat",
+    "currencySpace",
+    "currencyAbbreviationPeriods",
+    "shortDateFormat",
+    "longDateFormat"
+  ];
+  
+  const defaultValues = {
+    spellOutNumbers: "0 – 9",
+    numberSeparator: "commas",
+    currencyFormat: "symbol-amount",
+    currencySpace: "without",
+    currencyAbbreviationPeriods: "Don't Use",
+    shortDateFormat: "DD/MM/YYYY",
+    longDateFormat: "DD Month YYYY",
+  };
+  
   return (
     <WritingStyleSection title="Dates and Numbers">
+      <SelectAllSection 
+        control={control} 
+        sectionName="datesAndNumbers"
+        fields={datesAndNumbersFields}
+        setValue={setValue}
+        defaultValues={defaultValues}
+      />
+
       <p className="flex flex-wrap items-center gap-x-2">
-        Always spell out numbers
+        Spell out numbers
         <FormField
           control={control}
           name="spellOutNumbers"
@@ -25,14 +56,14 @@ export function DatesAndNumbersSection({ control }: DatesAndNumbersSectionProps)
             <FormItem className="inline-flex m-0">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[90px]">
+                  <SelectTrigger className="w-[110px]">
                     <SelectValue placeholder="Select option" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="0 – 9">0 – 9</SelectItem>
                   <SelectItem value="0 – 10">0 – 10</SelectItem>
-                  <SelectItem value="0 – 99">0 – 99</SelectItem>
+                  <SelectItem value="Don't spell out">Don't spell out</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
@@ -55,18 +86,18 @@ export function DatesAndNumbersSection({ control }: DatesAndNumbersSectionProps)
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="commas">commas</SelectItem>
-                  <SelectItem value="period">period</SelectItem>
-                  <SelectItem value="space">space</SelectItem>
+                  <SelectItem value="periods">periods</SelectItem>
+                  <SelectItem value="spaces">spaces</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        to separate numbers with four or more digits e.g. 1,000 vs 1.000 vs 1 000
+        for number separators
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
-        For currencies, use the
+        Use
         <FormField
           control={control}
           name="currencyFormat"
@@ -74,7 +105,7 @@ export function DatesAndNumbersSection({ control }: DatesAndNumbersSectionProps)
             <FormItem className="inline-flex m-0">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[170px]">
+                  <SelectTrigger className="w-[160px]">
                     <SelectValue placeholder="Select option" />
                   </SelectTrigger>
                 </FormControl>
@@ -86,7 +117,9 @@ export function DatesAndNumbersSection({ control }: DatesAndNumbersSectionProps)
             </FormItem>
           )}
         />
-        format
+
+        for currency format
+
         <FormField
           control={control}
           name="currencySpace"
@@ -94,22 +127,20 @@ export function DatesAndNumbersSection({ control }: DatesAndNumbersSectionProps)
             <FormItem className="inline-flex m-0">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[100px]">
+                  <SelectTrigger className="w-[110px]">
                     <SelectValue placeholder="Select option" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="without">without</SelectItem>
                   <SelectItem value="with">with</SelectItem>
+                  <SelectItem value="without">without</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        spaces in between. E.g. we spent 10.000 €
-      </p>
+        space,
 
-      <p className="flex flex-wrap items-center gap-x-2">
         <FormField
           control={control}
           name="currencyAbbreviationPeriods"
@@ -129,11 +160,11 @@ export function DatesAndNumbersSection({ control }: DatesAndNumbersSectionProps)
             </FormItem>
           )}
         />
-        periods in currency abbreviations. Example: USD, not U.S.D.
+        periods in abbreviations
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
-        For short dates, use
+        Use
         <FormField
           control={control}
           name="shortDateFormat"
@@ -141,23 +172,27 @@ export function DatesAndNumbersSection({ control }: DatesAndNumbersSectionProps)
             <FormItem className="inline-flex m-0">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[130px]">
+                  <SelectTrigger className="w-[140px]">
                     <SelectValue placeholder="Select option" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
                   <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
+                  <SelectItem value="YYYY/MM/DD">YYYY/MM/DD</SelectItem>
+                  <SelectItem value="DD-MM-YYYY">DD-MM-YYYY</SelectItem>
+                  <SelectItem value="MM-DD-YYYY">MM-DD-YYYY</SelectItem>
+                  <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        (without leading zeros). E.g. It was on 1/12/2025
+        for short date format
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
-        For long dates, use
+        Use
         <FormField
           control={control}
           name="longDateFormat"
@@ -165,19 +200,20 @@ export function DatesAndNumbersSection({ control }: DatesAndNumbersSectionProps)
             <FormItem className="inline-flex m-0">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[160px]">
+                  <SelectTrigger className="w-[150px]">
                     <SelectValue placeholder="Select option" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="DD Month YYYY">DD Month YYYY</SelectItem>
                   <SelectItem value="Month DD, YYYY">Month DD, YYYY</SelectItem>
+                  <SelectItem value="YYYY Month DD">YYYY Month DD</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
           )}
         />
-        (without leading zeros). E.g. It was on 31 December 1905.
+        for long date format
       </p>
     </WritingStyleSection>
   );

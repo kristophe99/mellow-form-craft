@@ -6,9 +6,8 @@ import {
   FormField,
   FormItem,
 } from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { WritingStyleSection } from "../WritingStyleSection";
 
 interface VoiceAndStyleSectionProps {
@@ -17,7 +16,7 @@ interface VoiceAndStyleSectionProps {
 
 export function VoiceAndStyleSection({ control }: VoiceAndStyleSectionProps) {
   return (
-    <WritingStyleSection title="Writing Style">
+    <WritingStyleSection title="Voice & Style">
       <p className="flex flex-wrap items-center gap-x-2">
         Use
         <FormField
@@ -27,7 +26,7 @@ export function VoiceAndStyleSection({ control }: VoiceAndStyleSectionProps) {
             <FormItem className="inline-flex m-0">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[110px]">
+                  <SelectTrigger className="w-[120px]">
                     <SelectValue placeholder="Select voice" />
                   </SelectTrigger>
                 </FormControl>
@@ -55,12 +54,11 @@ export function VoiceAndStyleSection({ control }: VoiceAndStyleSectionProps) {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                Write confidently
+                Write confidently — e.g., write "We should meet next week" rather than "I think we should meet next week"
               </div>
             </FormItem>
           )}
         />
-        — e.g., write "We should meet next week" rather than "I think we should meet next week"
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
@@ -76,12 +74,11 @@ export function VoiceAndStyleSection({ control }: VoiceAndStyleSectionProps) {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                Avoid wordy phrases
+                Avoid wordy phrases — e.g., say "Clearly, the report shows" instead of "It's clearly evident that the report shows"
               </div>
             </FormItem>
           )}
         />
-        — e.g., say "Clearly, the report shows" instead of "It's clearly evident that the report shows"
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
@@ -97,12 +94,11 @@ export function VoiceAndStyleSection({ control }: VoiceAndStyleSectionProps) {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                Use correct punctuation
+                Use correct punctuation - misplaced or missing commas, hyphens, semicolons, periods, and more
               </div>
             </FormItem>
           )}
         />
-        - misplaced or missing commas, hyphens, semicolons, periods, and more.
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
@@ -118,12 +114,11 @@ export function VoiceAndStyleSection({ control }: VoiceAndStyleSectionProps) {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                Use contractions where possible
+                Use contractions where possible e.g. "Don't" instead of "Do Not"
               </div>
             </FormItem>
           )}
         />
-        e.g. "Don't" instead of "Do Not"
       </p>
 
       <p className="flex flex-wrap items-center gap-x-2">
@@ -139,12 +134,11 @@ export function VoiceAndStyleSection({ control }: VoiceAndStyleSectionProps) {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                Use title case in headings and titles
+                Use title case in headings and titles e.g. "How to Write Effective Marketing Headlines" vs "How to write effective marketing headlines"
               </div>
             </FormItem>
           )}
         />
-        e.g. "How to Write Effective Marketing Headlines" vs "How to write effective marketing headlines"
       </p>
     </WritingStyleSection>
   );
