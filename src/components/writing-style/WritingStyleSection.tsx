@@ -10,7 +10,7 @@ export function WritingStyleSection({ title, children }: WritingStyleSectionProp
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">{title}</h2>
-      <div className="space-y-4 prose max-w-none text-foreground">
+      <div className="space-y-6 prose max-w-none text-foreground">
         {children}
       </div>
     </div>
